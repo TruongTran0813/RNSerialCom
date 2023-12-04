@@ -36,6 +36,9 @@ function App(): JSX.Element {
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(NativeModules.SerialComModule);
     let eventListener = eventEmitter.addListener('onDataReceive', event => {
+
+      //dữ liệu nhận là liên tục có dạng {"data": " ST,GS,+      0.12g ST,GS"}, nếu chuổi có từ "ST", show 0.12 g lên
+
       console.log(event); // "someValue"
     });
   }, []);
