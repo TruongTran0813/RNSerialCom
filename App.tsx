@@ -34,7 +34,6 @@ type SectionProps = PropsWithChildren<{
 
 function App(): JSX.Element {
   useEffect(() => {
-    console.log('abvc', NativeModules.SerialComModule.testSendEvent);
     const eventEmitter = new NativeEventEmitter(NativeModules.SerialComModule);
     let eventListener = eventEmitter.addListener('onDataReceive', event => {
       console.log(event); // "someValue"
