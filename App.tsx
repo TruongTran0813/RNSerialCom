@@ -37,8 +37,7 @@ function App(): JSX.Element {
     const eventEmitter = new NativeEventEmitter(NativeModules.SerialComModule);
     let eventListener = eventEmitter.addListener('onDataReceive', event => {
 
-      //dữ liệu nhận là liên tục có dạng {"data": " ST,GS,+      0.12g ST,GS"}, nếu chuổi có từ "ST", show 0.12 g lên
-
+      //dữ liệu nhận là liên tục có dạng {"data": " ST,GS,+      0.12g ST,GS"}, nếu chuổi có từ "ST", show 0.12 g lên textbox
       console.log(event); // "someValue"
     });
   }, []);
