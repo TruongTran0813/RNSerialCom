@@ -39,7 +39,7 @@ function App(): JSX.Element {
     let eventListener = eventEmitter.addListener('onDataReceive', event => {
       setScaleValue(event?.data || '');
       //dữ liệu nhận là liên tục có dạng {"data": " ST,GS,+      0.12g ST,GS"}, nếu chuổi có từ "ST", show 0.12 g lên textbox
-      console.log(event); // "someValue"
+     // console.log(event); // "someValue"
     });
   }, []);
   return (

@@ -30,6 +30,8 @@ public class SerialComModule  extends ReactContextBaseJavaModule {
     SerialComModule(ReactApplicationContext context) {
         super(context);
         this.mContext = context;
+         
+
         if (serialPortManager == null) {
 
             final Device device = new Device();
@@ -44,30 +46,33 @@ public class SerialComModule  extends ReactContextBaseJavaModule {
                 public void onDataReceive(byte[] recvBytes, int i) {
 
                     if (i == 32) {
+
                         WritableMap params = Arguments.createMap();
                         String textValue = convertData(recvBytes);
                         params.putString("data", textValue); // Thêm dữ liệu cần truyền
                         sendEvent("onDataReceive", params);
+
                     }
                 }
             });
         } //
-
     }
     
     String convertData(byte[] data) {
         if (data != null && data.length > 0) {
             String textValue = new String(data, StandardCharsets.US_ASCII);
-            textValue = textValue.replace("\r", "").replace("\n", "");
-
+             textValue = textValue.replace("\r", "").replace("\n", "");
             if (!(textValue.indexOf("ST,GS") > 0)) {
                 return "";
             }
-            textValue = textValue.replace("ST,GS,", "").replace("ST,GS", "").trim();
-            return textValue;
+           //textValue = textValue.replace("ST,GS,", "").replace("ST,GS", "").trim();
+            textValue = textValue.replaceAll("[^-?0-9.]+", "") ; 
+            return textValue + " g";
         }
         return "";
     }
+
+
 
     @Override
     public String getName() {
@@ -93,33 +98,6 @@ public class SerialComModule  extends ReactContextBaseJavaModule {
         sendEvent("onDataReceive", params);
 
     }
-    
-    @ReactMethod
-    public void addListener(String eventName) {
-          WritableMap params = Arguments.createMap();
-        params.putString("data", "abc");
-         sendEvent("onDataReceive", params);
-        // if (serialPortManager == null) {
-        //     System.out.println( eventName + "ABC");
-        //      final Device device = new Device();
-        //     device.path = selectPort;
-        //     device.speed = selectSpeed;
-        //     serialPortManager = new SerialPortManager(device);
 
-        //     device.path = selectPort;
-        //     device.speed = selectSpeed;
-        //     serialPortManager.setOnDataReceiveListener(new SerialPortManager.OnDataReceiveListener() {
-        //         @Override
-        //         public void onDataReceive(byte[] recvBytes, int i) {
-        //             System.out.println( recvBytes.toString() + "REC");
-        //             if (i == 32) {
-        //                 WritableMap params = Arguments.createMap();
-        //                 String textValue = new String(recvBytes, StandardCharsets.US_ASCII);
-        //                 params.putString("data", textValue);  // Thêm dữ liệu cần truyền
-        //                 sendEvent("onDataReceive", params);
-        //             }
-        //         }
-        //     });
-        //}//
-    }
 }
+
