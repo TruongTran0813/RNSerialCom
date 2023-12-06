@@ -4,6 +4,8 @@ import {Button, TextInput} from '../../components';
 import {theme} from '../../utils';
 import {authService} from '../../services';
 import {userStore} from '../../stores';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export default function LoginScreen() {
   const dispatchSetToken = userStore(state => state.dispatchSetToken);
@@ -11,7 +13,7 @@ export default function LoginScreen() {
   const dispatchSetCurrentUser = userStore(
     state => state.dispatchSetCurrentUser,
   );
-
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
     username: 'admin',
     password: 'admin',
@@ -19,8 +21,8 @@ export default function LoginScreen() {
   });
   const handleLogin = async () => {
     try {
+      setIsLoading(true);
       const result = await authService.login(values);
-      console.log('🚀 ~ file: index.js:23 ~ handleLogin ~ result:', result);
       if (result) {
         dispatchSetToken(result.access_token, result.refresh_token);
         const userInfo = {
@@ -33,13 +35,15 @@ export default function LoginScreen() {
       } else {
         alert('Username or Password is invalid');
       }
+      setIsLoading(false);
     } catch (error) {
-      console.log('🚀 ~ file: index.js:28 ~ handleLogin ~ error:', error);
+      setIsLoading(false);
       alert('Username or Password is invalid');
     }
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <Spinner visible={isLoading} textContent={'Loading...'} />
       <Text style={styles.header}>Login</Text>
       <TextInput
         label="Database"

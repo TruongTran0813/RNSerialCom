@@ -10,11 +10,19 @@ import React, {useState, useEffect} from 'react';
 
 export default function HomeScreen() {
   const [scaleValue, setScaleValue] = useState('0');
+  const onDataReceive = event => {
+    setScaleValue(event?.data || '');
+  };
   useEffect(() => {
     const eventEmitter = new NativeEventEmitter(NativeModules.SerialComModule);
-    let eventListener = eventEmitter.addListener('onDataReceive', event => {
-      setScaleValue(event?.data || '');
-    });
+    let eventListener = eventEmitter.addListener(
+      'onDataReceive',
+      onDataReceive,
+    );
+    return () => {
+      eventListener.remove();
+      eventEmitter.removeAllListeners('onDataReceive');
+    };
   }, []);
   return (
     <SafeAreaView style={styles.container}>
