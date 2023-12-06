@@ -17,10 +17,6 @@ import {userStore} from '../stores';
 
 const CustomDrawer = props => {
   const {currentUser, dispatchLogout} = userStore(state => state);
-  console.log(
-    '🚀 ~ file: AppStack.js:13 ~ AppStack ~ currentUser:',
-    currentUser,
-  );
 
   return (
     <View style={{flex: 1}}>

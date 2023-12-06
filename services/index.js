@@ -1,3 +1,3 @@
 import * as authService from './authService';
-
-export {authService};
+import * as materialPutAwayService from './materialPutAwayService';
+export {authService, materialPutAwayService};
